@@ -10,7 +10,7 @@ const RealtimeContext = createContext();
 const RealtimeProvider = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { classrooms } = useSelector((state) => {
+  const { classrooms, classroomId } = useSelector((state) => {
     return state.classroom;
   });
   const { accountType } = useSelector((state) => {
@@ -58,7 +58,7 @@ const RealtimeProvider = ({ children }) => {
       );
 
       if (foundClassroom) {
-        if (accountType === 'tutor') {
+        if (classroomId === classroom._id.toString() && accountType === 'tutor') {
           dispatch(setStudents(students));
         }
         const notification = new window.Notification(

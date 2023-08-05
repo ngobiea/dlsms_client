@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   add15MinutesToEndTime,
   calculateDateDifference,
-  isValidTimeRange
+  isValidTimeRange,
 } from '../../utils/dateTime';
 const appSlice = createSlice({
   name: 'app',
@@ -27,17 +27,24 @@ const appSlice = createSlice({
     },
     setStartDate(state, action) {
       state.startDate = action.payload;
-      state.endDate = add15MinutesToEndTime(new Date(action.payload)).toISOString();
+      state.endDate = add15MinutesToEndTime(
+        new Date(action.payload)
+      ).toISOString();
       state.duration = calculateDateDifference(
         new Date(action.payload),
         add15MinutesToEndTime(new Date(action.payload))
       );
-      state.isValidTime = isValidTimeRange(new Date(action.payload), add15MinutesToEndTime(new Date(action.payload)))
-      
+      state.isValidTime = isValidTimeRange(
+        new Date(action.payload),
+        add15MinutesToEndTime(new Date(action.payload))
+      );
     },
     setEndDate(state, action) {
       state.endDate = action.payload;
-      state.duration = calculateDateDifference(new Date(state.startDate), new Date(action.payload))
+      state.duration = calculateDateDifference(
+        new Date(state.startDate),
+        new Date(action.payload)
+      );
       state.isValidTime = isValidTimeRange(
         new Date(state.startDate),
         new Date(action.payload)
