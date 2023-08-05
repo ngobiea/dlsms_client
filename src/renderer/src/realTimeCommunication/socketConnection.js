@@ -16,7 +16,7 @@ export const connectWithSocketServer = (userDetails) => {
     console.log(socket.id);
   });
   socket.on('online-users', (data) => {
-    const { onlineUsers } = data;
+    // const { onlineUsers } = data;
     console.log(data);
   });
   socket.on('connect_error', (err) => {
@@ -25,3 +25,5 @@ export const connectWithSocketServer = (userDetails) => {
     console.log(err.data);
   });
 };
+
+

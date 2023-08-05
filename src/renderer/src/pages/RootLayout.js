@@ -6,13 +6,13 @@ import { RealtimeProvider } from '../context/realtime';
 
 const RootLayout = () => {
   return (
-    <RealtimeProvider>
-      <div className="relative w-screen h-screen">
-        <TitleNav />
-        <SideBar />
+    <div className="relative w-screen h-screen">
+      <TitleNav />
+      <RealtimeProvider>
         <Outlet />
-      </div>
-    </RealtimeProvider>
+      </RealtimeProvider>
+      <SideBar />
+    </div>
   );
 };
 

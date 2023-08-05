@@ -16,6 +16,9 @@ const classroomSlice = createSlice({
     students: [],
   },
   reducers: {
+    setClassrooms(state, action) {
+      state.classrooms = action.payload;
+    },
     setClassRoomId(state, action) {
       state.classroomId = action.payload;
     },
@@ -37,9 +40,6 @@ const classroomSlice = createSlice({
     addStudent(state, action) {
       state.students.push(action.payload);
     },
-    setClassrooms(state, action) {
-      state.classrooms = action.payload;
-    },
   },
 });
 
@@ -51,6 +51,6 @@ export const {
   setTuTor,
   setStudents,
   addStudent,
-  setClassrooms,
+  setClassrooms
 } = classroomSlice.actions;
 export const classroomReducer = classroomSlice.reducer;

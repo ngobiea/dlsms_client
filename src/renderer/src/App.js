@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { RouterProvider, createHashRouter } from 'react-router-dom';
+import { setClassrooms, useFetchClassroomsQuery } from './store';
+import { useDispatch, useSelector } from 'react-redux';
 import ClassRoomsPage from './pages/ClassRoomPages/ClassRoomsPage';
 import MonitorPage from './pages/MonitorPages/MonitorPage';
 import AssignmentPage from './pages/AssignmentPages/AssignmentPage';
@@ -93,7 +95,23 @@ const router = createHashRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  const dispatch = useDispatch();
+  const { accountType } = useSelector((state) => {
+    return state.account;
+  });
+  const { classrooms } = useSelector((state) => {
+    return state.classroom;
+  });
+  const { data, isSuccess } = useFetchClassroomsQuery(accountType);
+
+  useEffect(() => {
+    if (isSuccess) {
+      // console.log(data.classrooms);
+      // const { classrooms } = data;
+      dispatch(setClassrooms(data.classrooms));
+    }
+  }, [isSuccess]);
+  return <>{isSuccess && <RouterProvider router={router} />}</>;
 };
 
 export default App;

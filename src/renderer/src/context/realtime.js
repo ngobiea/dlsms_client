@@ -16,22 +16,17 @@ const RealtimeProvider = ({ children }) => {
   const { accountType } = useSelector((state) => {
     return state.account;
   });
-  const { data, isSuccess } = useFetchClassroomsQuery(accountType);
-  useEffect(() => {
-    if (isSuccess) {
-      console.log(data.classrooms);
-      dispatch(setClassrooms(data.classrooms));
-    }
-  }, [isSuccess]);
 
   useEffect(() => {
     const userDetails = localStorage.getItem('user');
     if (!userDetails) {
       logoutHandler();
     } else {
-      connectWithSocketServer(JSON.parse(userDetails));
+      if (classrooms.length !== 0) {
+        connectWithSocketServer(JSON.parse(userDetails));
+      }
     }
-  }, []);
+  }, [classrooms]);
   const connectWithSocketServer = (userDetails) => {
     const jwtToken = userDetails.token;
     socket = io('http://localhost:5001', {
@@ -42,7 +37,9 @@ const RealtimeProvider = ({ children }) => {
     socket.on('connect', () => {
       console.log('successfully connected with socket.io server');
       console.log(socket.id);
-      console.log(accountType);
+      // console.log(accountType);
+      console.log('classrooms from realtime context');
+      console.log(classrooms);
     });
     socket.on('online-users', (data) => {
       const { onlineUsers } = data;
@@ -54,22 +51,31 @@ const RealtimeProvider = ({ children }) => {
       console.log(err.data);
     });
     socket.on('update-classroom-members', (data) => {
+      console.log('update-classroom-members event received');
+      console.log(accountType);
       const { classroomId, students, studentId } = data;
-      const classroom = classrooms.find(
-        (classroom) => classroom._id.toString() === classroomId
+      console.log('data received');
+      console.log(data);
+      console.log('all classrooms');
+      console.log(classrooms);
+
+      const foundClassroom = classrooms.find(
+        (classroom) => classroom._id == classroomId
       );
-      if (classroom) {
-        if (classroom.id === data.classroomId && accountType === 'tutor') {
+      console.log('found classroom');
+      console.log(foundClassroom);
+      if (foundClassroom) {
+        if (foundClassroom.id === data.classroomId && accountType === 'tutor') {
           dispatch(setStudents(students));
         }
         const notification = new window.Notification(
-          `New Student Joined ${classroom.name}`,
+          `New Student Joined ${foundClassroom.name}`,
           {
             body: `${studentId} has join First Classroom`,
           }
         );
         notification.onclick = () => {
-          navigate(`/${classroom.id}`);
+          navigate(`/${foundClassroom.id}`);
         };
         notification.onclose = () => console.log('Closed');
       }
@@ -79,9 +85,11 @@ const RealtimeProvider = ({ children }) => {
     socket,
   };
   return (
-    <RealtimeContext.Provider value={values}>
-      {children}
-    </RealtimeContext.Provider>
+    <>
+      <RealtimeContext.Provider value={values}>
+        {children}
+      </RealtimeContext.Provider>
+    </>
   );
 };
 

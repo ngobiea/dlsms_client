@@ -25,6 +25,9 @@ const ClassRoomPage = () => {
   const { accountType } = useSelector((state) => {
     return state.account;
   });
+  const { classrooms } = useSelector((state) => {
+    return state.classroom;
+  });
   const { data, isSuccess } = useFetchClassroomQuery({
     accountType,
     classroomId,
@@ -41,6 +44,8 @@ const ClassRoomPage = () => {
       dispatch(setClassRoomId(classroomId));
       dispatch(setMessages(data.classroom.messages));
     }
+    console.log('classrooms from classroom page')
+    console.log(classrooms)
   }, [isSuccess]);
   const { isShowCode, isShowSchedule, isShowScheduleForm } = useSelector(
     (state) => {
