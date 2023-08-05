@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { logoutHandler } from '../utils/util';
 import { useNavigate } from 'react-router-dom';
-import { setStudents, useFetchClassroomsQuery, setClassrooms } from '../store';
+import { setStudents, addClassroom } from '../store';
 import { useDispatch, useSelector } from 'react-redux';
 let socket = null;
 const RealtimeContext = createContext();
@@ -37,7 +37,7 @@ const RealtimeProvider = ({ children }) => {
     socket.on('connect', () => {
       console.log('successfully connected with socket.io server');
       console.log(socket.id);
-      // console.log(accountType);
+
       console.log('classrooms from realtime context');
       console.log(classrooms);
     });
@@ -51,21 +51,14 @@ const RealtimeProvider = ({ children }) => {
       console.log(err.data);
     });
     socket.on('update-classroom-members', (data) => {
-      console.log('update-classroom-members event received');
-      console.log(accountType);
-      const { classroomId, students, studentId } = data;
-      console.log('data received');
-      console.log(data);
-      console.log('all classrooms');
-      console.log(classrooms);
+      const { classroom, students, studentId } = data;
 
       const foundClassroom = classrooms.find(
-        (classroom) => classroom._id == classroomId
+        (classR) => classR._id.toString() === classroom._id.toString()
       );
-      console.log('found classroom');
-      console.log(foundClassroom);
+
       if (foundClassroom) {
-        if (foundClassroom.id === data.classroomId && accountType === 'tutor') {
+        if (accountType === 'tutor') {
           dispatch(setStudents(students));
         }
         const notification = new window.Notification(
@@ -75,9 +68,20 @@ const RealtimeProvider = ({ children }) => {
           }
         );
         notification.onclick = () => {
-          navigate(`/${foundClassroom.id}`);
+          navigate(`/${foundClassroom._id.toString()}`);
         };
         notification.onclose = () => console.log('Closed');
+      } else if (accountType === 'student') {
+        dispatch(addClassroom(classroom));
+        const notification = new window.Notification(
+          `Success Joining ${foundClassroom.name}`,
+          {
+            body: `Welcome to ${foundClassroom.name}`,
+          }
+        );
+        notification.onclick = () => {
+          navigate(`/${foundClassroom._id.toString()}`);
+        };
       }
     });
   };

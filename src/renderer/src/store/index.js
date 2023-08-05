@@ -26,7 +26,8 @@ import {
   setTuTor,
   setStudents,
   addStudent,
-  setClassrooms
+  setClassrooms,
+  addClassroom
 } from './slices/classroomSlice';
 
 import { assignmentReducer } from './slices/assignmentSlice';
@@ -96,7 +97,7 @@ export {
   setClassRoomId,
   addStudent,
   setClassrooms,
-  
+  addClassroom,
 
   //chat slice
   addMessage,
