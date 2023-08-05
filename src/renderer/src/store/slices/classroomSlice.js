@@ -55,6 +55,6 @@ export const {
   setStudents,
   addStudent,
   setClassrooms,
-  addClassroom
+  addClassroom,
 } = classroomSlice.actions;
 export const classroomReducer = classroomSlice.reducer;

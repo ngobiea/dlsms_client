@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { RouterProvider, createHashRouter } from 'react-router-dom';
 import { setClassrooms, useFetchClassroomsQuery } from './store';
+import { logoutHandler } from './utils/util';
+import { connectWithSocketServer } from './realTimeCommunication/socketConnection';
 import { useDispatch, useSelector } from 'react-redux';
 import ClassRoomsPage from './pages/ClassRoomPages/ClassRoomsPage';
 import MonitorPage from './pages/MonitorPages/MonitorPage';
@@ -18,6 +20,7 @@ import ClassroomFiles from './pages/ClassRoomPages/Classroom/ClassroomFiles';
 import Assigned from './pages/ClassRoomPages/Assignments/Assigned';
 import GradedAssignment from './pages/ClassRoomPages/Assignments/GradedAssignment';
 import JoinClassroomVerification from './pages/ClassRoomPages/Student/JoinClassroomVerification';
+import { connect } from 'socket.io-client';
 
 const router = createHashRouter([
   {
@@ -99,16 +102,21 @@ const App = () => {
   const { accountType } = useSelector((state) => {
     return state.account;
   });
-  const { classrooms } = useSelector((state) => {
-    return state.classroom;
-  });
-  const { data, isSuccess } = useFetchClassroomsQuery(accountType);
 
+  const { data, isSuccess } = useFetchClassroomsQuery(accountType);
+  useEffect(() => {
+    const userDetails = localStorage.getItem('user');
+    if (!userDetails) {
+      logoutHandler();
+    } else {
+      connectWithSocketServer(JSON.parse(userDetails));
+    }
+  }, []);
   useEffect(() => {
     if (isSuccess) {
-      // console.log(data.classrooms);
-      // const { classrooms } = data;
-      dispatch(setClassrooms(data.classrooms));
+      const { classroomWithMessages } = data;
+      console.log(classroomWithMessages);
+      dispatch(setClassrooms(classroomWithMessages));
     }
   }, [isSuccess]);
   return <>{isSuccess && <RouterProvider router={router} />}</>;

@@ -7,6 +7,7 @@ const accountSlice = createSlice({
     email: '',
     token: null,
     user: JSON.parse(localStorage.getItem('user')) || null,
+    users: [],
   },
   reducers: {
     changeAccountType(state, action) {
@@ -24,7 +25,10 @@ const accountSlice = createSlice({
     },
     setUser(state, action) {
       state.user = action.payload;
-    }
+    },
+    setUsers(state, action) {
+      state.users = action.payload;
+    },
   },
 });
 

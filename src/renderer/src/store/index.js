@@ -27,7 +27,7 @@ import {
   setStudents,
   addStudent,
   setClassrooms,
-  addClassroom
+  addClassroom,
 } from './slices/classroomSlice';
 
 import { assignmentReducer } from './slices/assignmentSlice';

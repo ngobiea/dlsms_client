@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-
+import { store } from '../store';
 let socket = null;
 
 export const connectWithSocketServer = (userDetails) => {
@@ -16,8 +16,8 @@ export const connectWithSocketServer = (userDetails) => {
     console.log(socket.id);
   });
   socket.on('online-users', (data) => {
-    // const { onlineUsers } = data;
-    console.log(data);
+    const { onlineUsers } = data;
+    console.log(onlineUsers);
   });
   socket.on('connect_error', (err) => {
     console.log(err instanceof Error);
