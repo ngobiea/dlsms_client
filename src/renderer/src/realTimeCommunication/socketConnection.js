@@ -36,10 +36,10 @@ export const connectWithSocketServer = (userDetails, navigate) => {
       (classR) => classR._id.toString() === classroom._id.toString()
     );
     if (foundClassroom) {
+      store.dispatch(classroomApi.endpoints.fetchClassroom.initiate);
       if (classroomId === classroom._id.toString() && userId !== studentId) {
         store.dispatch(setStudents(students));
       }
-      store.dispatch(classroomApi.endpoints.fetchClassroom.initiate)
       const notification = new window.Notification(
         `New Student Join ${classroom.name}`,
         {
