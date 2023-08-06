@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
-import { fetchClassroom } from '../store';
+// import { fetchClassroom } from '../store';
+import { classroomApi } from '../store/apis/classroomsApi';
 import { store } from '../store';
 import { setUsers, addClassroom, setStudents } from '../store';
 let socket = null;
@@ -36,7 +37,7 @@ export const connectWithSocketServer = (userDetails, navigate) => {
       if (classroomId === classroom._id.toString() && accountType === 'tutor') {
         store.dispatch(setStudents(students));
       }
-      fetchClassroom.refetch();
+      store.dispatch(classroomApi.endpoints.fetchClassroom.initiate)
       const notification = new window.Notification(
         `New Student Join ${classroom.name}`,
         {

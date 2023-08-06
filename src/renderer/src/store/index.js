@@ -124,5 +124,4 @@ export {
   usePostJoinMutation,
 } from './apis/classroomsApi';
 
-export const fetchClassroom =
-  classroomApi.endpoints.fetchClassroom.useQuery();
+
