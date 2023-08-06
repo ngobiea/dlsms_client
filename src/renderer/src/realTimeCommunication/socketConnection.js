@@ -1,5 +1,4 @@
 import io from 'socket.io-client';
-import { } from '@reduxjs/toolkit/query/react'
 import { classroomApi } from '../store/apis/classroomsApi';
 
 import { store } from '../store';
@@ -38,6 +37,7 @@ export const connectWithSocketServer = (userDetails, navigate) => {
       if (classroomId === classroom._id.toString() && accountType === 'tutor') {
         store.dispatch(setStudents(students));
       }
+      classroomApi.endpoints.fetchClassroom.useQuery().refetch();
       const notification = new window.Notification(
         `New Student Join ${classroom.name}`,
         {
@@ -45,7 +45,7 @@ export const connectWithSocketServer = (userDetails, navigate) => {
         }
       );
       notification.onclick = () => {
-        navigate(`/${classroomId}`);
+        navigate(`/${classroom._id.toString()}`);
       };
     } else {
       const userId = JSON.parse(localStorage.getItem('user')).userId;
