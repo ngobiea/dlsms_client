@@ -121,5 +121,8 @@ export {
   useVerifyClassroomCodeMutation,
   usePostJoinClassroomMutation,
   usePostScheduleClassSessionMutation,
-  usePostJoinMutation
+  usePostJoinMutation,
 } from './apis/classroomsApi';
+
+export const fetchClassroom =
+  classroomApi.endpoints.fetchClassroom.useQuery();
