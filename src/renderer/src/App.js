@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { RouterProvider, createHashRouter } from 'react-router-dom';
+import { RouterProvider, createHashRouter,useNavigate } from 'react-router-dom';
 import { setClassrooms, useFetchClassroomsQuery } from './store';
 import { logoutHandler } from './utils/util';
 import { connectWithSocketServer } from './realTimeCommunication/socketConnection';
@@ -97,26 +97,9 @@ const router = createHashRouter([
 ]);
 
 const App = () => {
-  const dispatch = useDispatch();
-  const { accountType } = useSelector((state) => {
-    return state.account;
-  });
-
-  const { data, isSuccess } = useFetchClassroomsQuery(accountType);
-
-  useEffect(() => {
-    const userDetails = localStorage.getItem('user');
-    if (!userDetails) {
-      logoutHandler();
-    } else {
-    }
-    if (isSuccess) {
-      const { classroomWithMessages } = data;
-      dispatch(setClassrooms(classroomWithMessages));
-      connectWithSocketServer(JSON.parse(userDetails));
-    }
-  }, [isSuccess]);
-  return <>{isSuccess && <RouterProvider router={router} />}</>;
+  // const navigate = useNavigate();
+  
+  return <>{ <RouterProvider router={router} />}</>;
 };
 
 export default App;

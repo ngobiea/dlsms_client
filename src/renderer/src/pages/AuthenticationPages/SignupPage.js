@@ -30,8 +30,6 @@ useEffect(() => {
     navigate('/');
   }
 }, [isSuccess]);
-
-
   const idClass =
     accountType === 'student' ? 'grid sm:grid-cols-2 sm:gap-6' : '';
   return (

@@ -20,7 +20,3 @@ const ClassRoomsPage = () => {
 };
 
 export default ClassRoomsPage;
-
-/**
- *
- */

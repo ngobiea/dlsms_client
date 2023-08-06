@@ -35,7 +35,6 @@ const classroomApi = createApi({
         query: postScheduleClassSessionQuery,
       }),
       postJoin: builder.mutation({
-        invalidatesTags: ['classroom'],
         query: (data) => {
           return {
             url: '/student/join-classroom',

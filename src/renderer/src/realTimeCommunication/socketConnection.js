@@ -1,11 +1,13 @@
 import io from 'socket.io-client';
+import { } from '@reduxjs/toolkit/query/react'
+import { classroomApi } from '../store/apis/classroomsApi';
+
 import { store } from '../store';
-import { setUsers } from '../store';
+import { setUsers, addClassroom, setStudents } from '../store';
 let socket = null;
 
-export const connectWithSocketServer = (userDetails) => {
+export const connectWithSocketServer = (userDetails, navigate) => {
   const jwtToken = userDetails.token;
-
   socket = io('http://localhost:5001', {
     auth: {
       token: jwtToken,
@@ -24,10 +26,43 @@ export const connectWithSocketServer = (userDetails) => {
     console.log(err.message);
     console.log(err.data);
   });
-  socket.on('update-classroom-members', data => {
-    console.log('received update-classroom-members event')
-    console.log(data)
-    const userId = JSON.parse(localStorage.getItem('user')).userId;
-    console.log(userId)
-  })
+  socket.on('update-classroom-members', (data) => {
+    console.log('received update-classroom-members event');
+    const { classroom, students, studentId } = data;
+    const { classroomId, classrooms } = store.getState().classroom;
+    const { accountType } = store.getState().account;
+    const foundClassroom = classrooms.find(
+      (classR) => classR._id.toString() === classroom._id.toString()
+    );
+    if (foundClassroom) {
+      if (classroomId === classroom._id.toString() && accountType === 'tutor') {
+        store.dispatch(setStudents(students));
+      }
+      
+      const notification = new window.Notification(
+        `New Student Join ${classroom.name}`,
+        {
+          body: `${studentId} has join ${classroom.name}`,
+        }
+      );
+      notification.onclick = () => {
+        navigate(`/${classroomId}`);
+      };
+    } else {
+      const userId = JSON.parse(localStorage.getItem('user')).userId;
+      if (userId === studentId) {
+        store.dispatch(addClassroom(classroom));
+
+        const notification = new window.Notification(
+          `Successfully joined ${classroom.name}`,
+          {
+            body: `Welcome to ${classroom.name}`,
+          }
+        );
+        notification.onclick = () => {
+          navigate('/');
+        };
+      }
+    }
+  });
 };
