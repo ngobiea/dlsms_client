@@ -34,6 +34,16 @@ const classroomApi = createApi({
       postScheduleClassSession: builder.mutation({
         query: postScheduleClassSessionQuery,
       }),
+      postJoin: builder.mutation({
+        invalidatesTags: ['classroom'],
+        query: (data) => {
+          return {
+            url: '/student/join-classroom',
+            method: 'POST',
+            body: data,
+          };
+        },
+      }),
     };
   },
 });
@@ -45,6 +55,7 @@ export const {
   useVerifyClassroomCodeMutation,
   usePostJoinClassroomMutation,
   usePostScheduleClassSessionMutation,
+  usePostJoinMutation,
 } = classroomApi;
 
 export { classroomApi };

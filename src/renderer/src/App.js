@@ -20,7 +20,6 @@ import ClassroomFiles from './pages/ClassRoomPages/Classroom/ClassroomFiles';
 import Assigned from './pages/ClassRoomPages/Assignments/Assigned';
 import GradedAssignment from './pages/ClassRoomPages/Assignments/GradedAssignment';
 import JoinClassroomVerification from './pages/ClassRoomPages/Student/JoinClassroomVerification';
-import { connect } from 'socket.io-client';
 
 const router = createHashRouter([
   {
@@ -104,19 +103,17 @@ const App = () => {
   });
 
   const { data, isSuccess } = useFetchClassroomsQuery(accountType);
+
   useEffect(() => {
     const userDetails = localStorage.getItem('user');
     if (!userDetails) {
       logoutHandler();
     } else {
-      connectWithSocketServer(JSON.parse(userDetails));
     }
-  }, []);
-  useEffect(() => {
     if (isSuccess) {
       const { classroomWithMessages } = data;
-      console.log(classroomWithMessages);
       dispatch(setClassrooms(classroomWithMessages));
+      connectWithSocketServer(JSON.parse(userDetails));
     }
   }, [isSuccess]);
   return <>{isSuccess && <RouterProvider router={router} />}</>;

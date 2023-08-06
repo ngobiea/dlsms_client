@@ -17,7 +17,7 @@ const ClassroomCode = ({ classroom }) => {
         <div className="relative py-8 px-5 md:px-10 bg-white opacity-100 shadow-md rounded border border-gray-400">
           <button
             onClick={() => {
-                    setCopy('Copy');
+              setCopy('Copy');
               dispatch(setShowCode(false));
             }}
             type="button"

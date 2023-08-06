@@ -25,9 +25,7 @@ const ClassRoomPage = () => {
   const { accountType } = useSelector((state) => {
     return state.account;
   });
-  const { classrooms } = useSelector((state) => {
-    return state.classroom;
-  });
+
   const { data, isSuccess } = useFetchClassroomQuery({
     accountType,
     classroomId,
@@ -35,17 +33,16 @@ const ClassRoomPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      const { name, code, tutor, description, students } = data.classroom;
+      console.log(data.classroom)
+      const { name, code, tutor, description, students, messages } = data;
       dispatch(setName(name));
       dispatch(setTuTor(tutor));
       dispatch(setStudents(students));
       dispatch(setCode(code));
       dispatch(setDescription(description));
       dispatch(setClassRoomId(classroomId));
-      dispatch(setMessages(data.classroom.messages));
+      dispatch(setMessages(messages));
     }
-    console.log('classrooms from classroom page')
-    console.log(classrooms)
   }, [isSuccess]);
   const { isShowCode, isShowSchedule, isShowScheduleForm } = useSelector(
     (state) => {
@@ -62,9 +59,9 @@ const ClassRoomPage = () => {
         }
       }}
     >
-      {isSuccess && <ClassRoomSideBar classroom={data.classroom} />}
+      {isSuccess && <ClassRoomSideBar />}
       <Outlet />
-      {isSuccess && isShowCode && <ClassroomCode classroom={data.classroom} />}
+      {isSuccess && isShowCode && <ClassroomCode />}
       {isShowScheduleForm && <ScheduleClassSession />}
     </div>
   );

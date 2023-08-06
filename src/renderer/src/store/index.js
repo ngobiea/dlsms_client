@@ -6,6 +6,7 @@ import {
   changeEmail,
   login,
   logout,
+  setUsers,
 } from './slices/accountsSlice';
 import {
   modalReducer,
@@ -73,6 +74,7 @@ export {
   changeEmail,
   logout,
   login,
+  setUsers,
   // modal slices
   setCreateAssignment,
   setCreateClassroom,
@@ -119,4 +121,5 @@ export {
   useVerifyClassroomCodeMutation,
   usePostJoinClassroomMutation,
   usePostScheduleClassSessionMutation,
+  usePostJoinMutation
 } from './apis/classroomsApi';

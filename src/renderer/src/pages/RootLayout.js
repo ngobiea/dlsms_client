@@ -4,6 +4,7 @@ import TitleNav from '../components/TitleNav';
 import SideBar from '../components/SideBar';
 
 const RootLayout = () => {
+
   return (
     <div className="relative w-screen h-screen">
       <TitleNav />

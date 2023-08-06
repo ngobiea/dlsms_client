@@ -32,6 +32,6 @@ const accountSlice = createSlice({
   },
 });
 
-export const { changeAccountType, changeEmail, logout, login } =
+export const { changeAccountType, changeEmail, logout, login,setUsers } =
   accountSlice.actions;
 export const accountReducer = accountSlice.reducer;
