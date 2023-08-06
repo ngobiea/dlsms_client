@@ -38,7 +38,6 @@ export const connectWithSocketServer = (userDetails, navigate) => {
       if (classroomId === classroom._id.toString() && accountType === 'tutor') {
         store.dispatch(setStudents(students));
       }
-      
       const notification = new window.Notification(
         `New Student Join ${classroom.name}`,
         {
