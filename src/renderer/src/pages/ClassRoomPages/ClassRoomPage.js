@@ -33,7 +33,6 @@ const ClassRoomPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log(data.classroom)
       const { name, code, tutor, description, students, messages } = data;
       dispatch(setName(name));
       dispatch(setTuTor(tutor));

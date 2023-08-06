@@ -20,7 +20,6 @@ const ClassRoomSideBar = () => {
   const { name, tutor, students } = useSelector((state) => {
     return state.classroom;
   });
-  console.log(name, tutor, students)
   const dispatch = useDispatch();
   return (
     <aside className="w-64" aria-label="Sidebar">

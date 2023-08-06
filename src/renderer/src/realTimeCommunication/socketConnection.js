@@ -14,9 +14,6 @@ export const connectWithSocketServer = (userDetails) => {
 
   socket.on('connect', () => {
     console.log('successfully connected with socket.io server');
-    console.log(socket.id);
-    console.log(store.getState().classroom.classrooms)
-    console.log(store.getState().classroomApi)
   });
   socket.on('online-users', (data) => {
     const { onlineUsers } = data;
