@@ -27,6 +27,8 @@ export const connectWithSocketServer = (userDetails, navigate) => {
   });
   socket.on('update-classroom-members', (data) => {
     console.log('received update-classroom-members event');
+      const userId = JSON.parse(localStorage.getItem('user')).userId;
+
     const { classroom, students, studentId } = data;
     const { classroomId, classrooms } = store.getState().classroom;
     const { accountType } = store.getState().account;
@@ -34,7 +36,7 @@ export const connectWithSocketServer = (userDetails, navigate) => {
       (classR) => classR._id.toString() === classroom._id.toString()
     );
     if (foundClassroom) {
-      if (classroomId === classroom._id.toString() && accountType === 'tutor') {
+      if (classroomId === classroom._id.toString() && userId !== studentId) {
         store.dispatch(setStudents(students));
       }
       store.dispatch(classroomApi.endpoints.fetchClassroom.initiate)
@@ -48,7 +50,6 @@ export const connectWithSocketServer = (userDetails, navigate) => {
         navigate(`/${classroom._id.toString()}`);
       };
     } else {
-      const userId = JSON.parse(localStorage.getItem('user')).userId;
       if (userId === studentId) {
         store.dispatch(addClassroom(classroom));
 
