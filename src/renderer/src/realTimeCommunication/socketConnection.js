@@ -1,6 +1,5 @@
 import io from 'socket.io-client';
 // import { fetchClassroom } from '../store';
-import { classroomApi } from '../store/apis/classroomsApi';
 import { store } from '../store';
 import { setUsers, addClassroom, setStudents } from '../store';
 let socket = null;
@@ -27,7 +26,7 @@ export const connectWithSocketServer = (userDetails, navigate) => {
   });
   socket.on('update-classroom-members', (data) => {
     console.log('received update-classroom-members event');
-      const userId = JSON.parse(localStorage.getItem('user')).userId;
+    const userId = JSON.parse(localStorage.getItem('user')).userId;
 
     const { classroom, students, studentId } = data;
     const { classroomId, classrooms } = store.getState().classroom;
@@ -36,7 +35,6 @@ export const connectWithSocketServer = (userDetails, navigate) => {
       (classR) => classR._id.toString() === classroom._id.toString()
     );
     if (foundClassroom) {
-      store.dispatch(classroomApi.endpoints.fetchClassroom.initiate);
       if (classroomId === classroom._id.toString() && userId !== studentId) {
         store.dispatch(setStudents(students));
       }
