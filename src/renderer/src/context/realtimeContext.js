@@ -25,7 +25,7 @@ const RealtimeContext = createContext();
 
 const RealtimeProvider = ({ children }) => {
   const { accountType } = store.getState().account;
-
+  console.log(accountType)
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,7 +33,7 @@ const RealtimeProvider = ({ children }) => {
 
   const connectWithSocketServer = () => {
     const { classrooms, classroomId } = store.getState().classroom;
-    const { accountType } = store.getState().account;
+    
 
     socket.on('connect', () => {
       console.log('successfully connected with socket.io server');
