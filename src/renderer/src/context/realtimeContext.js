@@ -25,7 +25,7 @@ const RealtimeContext = createContext();
 
 const RealtimeProvider = ({ children }) => {
   const { accountType } = store.getState().account;
-  console.log(accountType)
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,7 +33,6 @@ const RealtimeProvider = ({ children }) => {
 
   const connectWithSocketServer = () => {
     const { classrooms, classroomId } = store.getState().classroom;
-    
 
     socket.on('connect', () => {
       console.log('successfully connected with socket.io server');
@@ -58,11 +57,15 @@ const RealtimeProvider = ({ children }) => {
       );
 
       if (foundClassroom) {
+        console.log(classroomId);
+        console.log(accountType);
+        console.log(classroom._id.toString());
         if (
           classroomId === classroom._id.toString() &&
           accountType === 'tutor'
         ) {
-          dispatch(setStudents(students));
+          console.log('updated classroom');
+          store.dispatch(setStudents(students));
         }
         const notification = new window.Notification(
           `New Student Join ${classroom.name}`,
@@ -90,6 +93,7 @@ const RealtimeProvider = ({ children }) => {
       }
     });
     socket.on('send-classroom', (value) => {
+      console.log(classroomId);
       console.log('received send-classroom event');
       console.log(value);
       store.dispatch(setStudents(value.students));
