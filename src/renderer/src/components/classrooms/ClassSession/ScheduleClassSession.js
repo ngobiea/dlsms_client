@@ -34,7 +34,7 @@ const ScheduleClassSession = () => {
     schedule.startDate = new Date(startDate);
     schedule.endDate = new Date(endDate);
     schedule.classroomId = classroomId;
-    console.log(schedule);
+    
     scheduleClassroom(schedule);
   };
   const handleStartDateChange = (selected) => {
@@ -60,8 +60,8 @@ const ScheduleClassSession = () => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(setShowScheduleForm(false));
-      console.log('success scheduling classroom');
-      console.log(data.savedSessionMessage);
+      
+      
       dispatch(addMessage(data.savedSessionMessage));
       resetField('title', { keepValue: false });
       resetField('description', { keepValue: false });

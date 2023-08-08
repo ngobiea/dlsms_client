@@ -7,7 +7,7 @@ import FileInput from '../../../components/App/FileInput';
 const CreateAssignment = () => {
   const { register, handleSubmit, errors } = useContext(AccountContext);
   const handleCrateAssignment = (data) => {
-    console.log(data);
+    
   };
 
   return (

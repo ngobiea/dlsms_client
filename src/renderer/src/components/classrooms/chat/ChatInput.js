@@ -6,7 +6,7 @@ const ChatInput = () => {
   const { register, handleSubmit, errors, resetField } =
     useContext(AccountContext);
   const handleSendMessage = (message) => {
-    console.log(message);
+  
     resetField('message');
   };
   useEffect(() => {

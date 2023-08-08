@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useParams, Outlet } from 'react-router-dom';
 import ClassRoomSideBar from '../../components/classrooms/ClassRoomSideBar';
 import ClassroomCode from '../../components/classrooms/ClassroomCode';
 import ScheduleClassSession from '../../components/classrooms/ClassSession/ScheduleClassSession';
+import RealtimeContext from '../../context/realtimeContext';
 import './classroomPage.css';
 import {
   useFetchClassroomQuery,
@@ -18,6 +19,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 
 const ClassRoomPage = () => {
+  const { socket } = useContext(RealtimeContext);
   const dispatch = useDispatch();
   const params = useParams();
   const { classroomId } = params;
@@ -30,6 +32,10 @@ const ClassRoomPage = () => {
     accountType,
     classroomId,
   });
+  useEffect(() => {
+    dispatch(setClassRoomId(classroomId));
+    socket.emit('update-classroom', classroomId);
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {
@@ -40,7 +46,6 @@ const ClassRoomPage = () => {
       dispatch(setStudents(students));
       dispatch(setCode(code));
       dispatch(setDescription(description));
-      dispatch(setClassRoomId(classroomId));
       dispatch(setMessages(messages));
     }
   }, [isSuccess]);

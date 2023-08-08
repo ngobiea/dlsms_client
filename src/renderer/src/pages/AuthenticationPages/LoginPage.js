@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import EmailVerificationError from '../../components/error/EmailVerificationError';
 
-
 const LoginPage = () => {
   const { accountType } = useSelector((state) => {
     return state.account;
@@ -27,7 +26,7 @@ const LoginPage = () => {
 
   if (isSuccess) {
     const expirationDate = 1713117329.737435;
-    let isLogin = {
+    const isLogin = {
       url: 'https://dlsms.com',
       name: 'isLogin',
       value: true,

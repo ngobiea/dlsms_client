@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MdClose, MdContentCopy } from 'react-icons/md';
 import { setShowCode } from '../../store';
-import { useDispatch } from 'react-redux';
-const ClassroomCode = ({ classroom }) => {
+import { useDispatch, useSelector } from 'react-redux';
+const ClassroomCode = () => {
   const dispatch = useDispatch();
-
+  const { code } = useSelector((state) => {
+    return state.classroom;
+  });
   const [copy, setCopy] = useState('Copy');
   const inputRef = useRef(null);
   useEffect(() => {
@@ -34,14 +36,14 @@ const ClassroomCode = ({ classroom }) => {
               <input
                 type="text"
                 ref={inputRef}
-                value={classroom.code}
+                value={code}
                 readOnly
                 className="block p-2.5 w-full text-sm text-center text-green-900 bg-green-50 rounded-l-lg border-r-green-50 border-l-2  border-green-300 focus:ring-title focus:border-title focus:border-0"
               />
               <button
                 onClick={() => {
                   setCopy('Copied');
-                  window.account.copyCode(classroom.code);
+                  window.account.copyCode(code);
                 }}
                 type="submit"
                 className="flex items-center justify-center p-2.5 text-sm font-medium text-white bg-green-700 rounded-r-lg border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300"
