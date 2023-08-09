@@ -58,20 +58,20 @@ const RealtimeProvider = ({ children }) => {
       );
 
       if (foundClassroom) {
-        if (
-          classroomId === classroom._id.toString() &&
-          accountType === 'tutor'
-        ) {
+        if (classroomId === classroom._id.toString()) {
           store.dispatch(setStudents(students));
-          const notification = new window.Notification(
-            `New Student Join ${classroom.name}`,
-            {
-              body: `${studentId} has join ${classroom.name}`,
-            }
-          );
-          notification.onclick = () => {
-            navigate(`/${classroom._id.toString()}`);
-          };
+
+          if (accountType === 'tutor') {
+            const notification = new window.Notification(
+              `New Student Join ${classroom.name}`,
+              {
+                body: `${studentId} has join ${classroom.name}`,
+              }
+            );
+            notification.onclick = () => {
+              navigate(`/${classroom._id.toString()}`);
+            };
+          }
         }
       } else {
         if (userId === studentId) {
