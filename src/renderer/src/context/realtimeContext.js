@@ -32,7 +32,7 @@ const RealtimeProvider = ({ children }) => {
   const { data, isSuccess } = useFetchClassroomsQuery(accountType);
 
   const connectWithSocketServer = () => {
-    const { classrooms, classroomId } = store.getState().classroom;
+    const { classrooms } = store.getState().classroom;
 
     socket.on('connect', () => {
       console.log('successfully connected with socket.io server');
@@ -47,6 +47,7 @@ const RealtimeProvider = ({ children }) => {
       console.log(err.data);
     });
     socket.on('update-classroom-members', (value) => {
+      const { classroomId } = store.getState().classroom;
       console.log('received update-classroom-members event');
       const userId = JSON.parse(localStorage.getItem('user')).userId;
 
@@ -57,42 +58,39 @@ const RealtimeProvider = ({ children }) => {
       );
 
       if (foundClassroom) {
-        console.log(classroomId);
-        console.log(accountType);
-        console.log(classroom._id.toString());
         if (
           classroomId === classroom._id.toString() &&
           accountType === 'tutor'
         ) {
-          console.log('updated classroom');
           store.dispatch(setStudents(students));
+          const notification = new window.Notification(
+            `New Student Join ${classroom.name}`,
+            {
+              body: `${studentId} has join ${classroom.name}`,
+            }
+          );
+          notification.onclick = () => {
+            navigate(`/${classroom._id.toString()}`);
+          };
         }
-        const notification = new window.Notification(
-          `New Student Join ${classroom.name}`,
-          {
-            body: `${studentId} has join ${classroom.name}`,
-          }
-        );
-        notification.onclick = () => {
-          navigate(`/${classroom._id.toString()}`);
-        };
       } else {
         if (userId === studentId) {
           dispatch(addClassroom(classroom));
 
-          const notification = new window.Notification(
-            `Successfully joined ${classroom.name}`,
-            {
-              body: `Welcome to ${classroom.name}`,
-            }
-          );
-          notification.onclick = () => {
-            navigate();
-          };
+          // const notification = new window.Notification(
+          //   `Successfully joined ${classroom.name}`,
+          //   {
+          //     body: `Welcome to ${classroom.name}`,
+          //   }
+          // );
+          // notification.onclick = () => {
+          //   navigate();
+          // };
         }
       }
     });
     socket.on('send-classroom', (value) => {
+      const { classroomId } = store.getState().classroom;
       console.log(classroomId);
       console.log('received send-classroom event');
       console.log(value);

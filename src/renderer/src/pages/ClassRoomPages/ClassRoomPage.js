@@ -47,6 +47,7 @@ const ClassRoomPage = () => {
       dispatch(setCode(code));
       dispatch(setDescription(description));
       dispatch(setMessages(messages));
+      dispatch(setClassRoomId(classroomId));
     }
   }, [isSuccess]);
   const { isShowCode, isShowSchedule, isShowScheduleForm } = useSelector(
