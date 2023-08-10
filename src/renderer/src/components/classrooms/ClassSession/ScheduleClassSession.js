@@ -34,7 +34,6 @@ const ScheduleClassSession = () => {
     schedule.startDate = new Date(startDate);
     schedule.endDate = new Date(endDate);
     schedule.classroomId = classroomId;
-    
     scheduleClassroom(schedule);
   };
   const handleStartDateChange = (selected) => {
@@ -60,11 +59,15 @@ const ScheduleClassSession = () => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(setShowScheduleForm(false));
-      
-      
-      dispatch(addMessage(data.savedSessionMessage));
+      dispatch(addMessage(data.savedSessionMessage.message));
       resetField('title', { keepValue: false });
       resetField('description', { keepValue: false });
+      const notification = new Notification('Success', {
+        body: 'Class Session Scheduled Successfully',
+      });
+      notification.onclick = () => {
+        console.log('first');
+      };
     }
   }, [isSuccess]);
 

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect } from 'react';
+import React, { createContext, useEffect, useMemo } from 'react';
 import io from 'socket.io-client';
 import { logoutHandler } from '../utils/util';
 import { useNavigate } from 'react-router-dom';
@@ -6,10 +6,13 @@ import {
   useFetchClassroomsQuery,
   setClassrooms,
   setStudents,
-  addClassroom,
   store,
+  setMessages,
 } from '../store';
 import { useDispatch } from 'react-redux';
+import { joinClassroomHandler } from '../realTimeCommunication/classroom/joinClassroomHandler';
+import { classroomScheduleMessageHandle } from '../realTimeCommunication/classroom/classroom/classroomScheduleMessageHandle';
+
 const userDetails = JSON.parse(localStorage.getItem('user'));
 let socket;
 if (userDetails) {
@@ -32,8 +35,6 @@ const RealtimeProvider = ({ children }) => {
   const { data, isSuccess } = useFetchClassroomsQuery(accountType);
 
   const connectWithSocketServer = () => {
-    const { classrooms } = store.getState().classroom;
-
     socket.on('connect', () => {
       console.log('successfully connected with socket.io server');
       console.log(socket.id);
@@ -47,53 +48,14 @@ const RealtimeProvider = ({ children }) => {
       console.log(err.data);
     });
     socket.on('update-classroom-members', (value) => {
-      const { classroomId } = store.getState().classroom;
-      console.log('received update-classroom-members event');
-      const userId = JSON.parse(localStorage.getItem('user')).userId;
-
-      const { classroom, students, studentId } = value;
-
-      const foundClassroom = classrooms.find(
-        (classR) => classR._id.toString() === classroom._id.toString()
-      );
-
-      if (foundClassroom) {
-        if (classroomId === classroom._id.toString()) {
-          store.dispatch(setStudents(students));
-        }
-        if (accountType === 'tutor') {
-          const notification = new window.Notification(
-            `New Student Join ${classroom.name}`,
-            {
-              body: `${studentId} has join ${classroom.name}`,
-            }
-          );
-          notification.onclick = () => {
-            navigate(`/${classroom._id.toString()}`);
-          };
-        }
-      } else {
-        if (userId === studentId) {
-          dispatch(addClassroom(classroom));
-
-          // const notification = new window.Notification(
-          //   `Successfully joined ${classroom.name}`,
-          //   {
-          //     body: `Welcome to ${classroom.name}`,
-          //   }
-          // );
-          // notification.onclick = () => {
-          //   navigate();
-          // };
-        }
-      }
+      joinClassroomHandler(value, navigate);
     });
     socket.on('send-classroom', (value) => {
-      const { classroomId } = store.getState().classroom;
-      console.log(classroomId);
-      console.log('received send-classroom event');
-      console.log(value);
       store.dispatch(setStudents(value.students));
+      store.dispatch(setMessages(value.messages));
+    });
+    socket.on('classroom-schedule-message', (value) => {
+      classroomScheduleMessageHandle(value, navigate);
     });
   };
 
@@ -106,15 +68,16 @@ const RealtimeProvider = ({ children }) => {
       connectWithSocketServer();
     }
   }, [data, isSuccess]);
-  const values = {
-    socket,
-  };
+
+  const values = useMemo(() => {
+    return {
+      socket,
+    };
+  }, [socket]);
   return (
-    <>
-      <RealtimeContext.Provider value={values}>
-        {children}
-      </RealtimeContext.Provider>
-    </>
+    <RealtimeContext.Provider value={values}>
+      {children}
+    </RealtimeContext.Provider>
   );
 };
 
