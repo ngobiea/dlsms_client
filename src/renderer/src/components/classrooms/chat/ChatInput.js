@@ -1,17 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import { GrAttachment } from 'react-icons/gr';
-import AccountContext from '../../../context/accountContext';
-
+import { useForm } from 'react-hook-form';
 const ChatInput = () => {
-  const { register, handleSubmit, errors, resetField } =
-    useContext(AccountContext);
+  const { register, handleSubmit, errors, resetField } = useForm();
   const handleSendMessage = (message) => {
-  
     resetField('message');
   };
-  useEffect(() => {
-    resetField('message');
-  }, []);
+
   return (
     <form
       onSubmit={handleSubmit(handleSendMessage)}
@@ -25,7 +20,6 @@ const ChatInput = () => {
         </span>
         <input
           {...register('message', { required: true })}
-          autoFocus={true}
           type="text"
           placeholder="Write your message!"
           className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3 focus:ring-title focus:border-title"

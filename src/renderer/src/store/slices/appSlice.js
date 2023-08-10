@@ -26,6 +26,7 @@ const appSlice = createSlice({
       state.percentageCount = action.payload;
     },
     setStartDate(state, action) {
+      console.log('setState Date')
       state.startDate = action.payload;
       state.endDate = add15MinutesToEndTime(
         new Date(action.payload)

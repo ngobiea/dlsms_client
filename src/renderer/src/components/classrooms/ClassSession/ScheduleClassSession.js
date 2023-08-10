@@ -8,7 +8,7 @@ import {
   usePostScheduleClassSessionMutation,
   addMessage,
 } from '../../../store';
-import AccountContext from '../../../context/accountContext';
+import RealtimeContext from '../../../context/realtimeContext';
 import Input from '../../App/Input';
 import TextArea from '../../App/TextArea';
 import DateInput from '../../App/DateInput';
@@ -26,11 +26,12 @@ const ScheduleClassSession = () => {
   });
   const [scheduleClassroom, { isSuccess, data }] =
     usePostScheduleClassSessionMutation();
-  const { register, handleSubmit, errors, resetField } =
-    useContext(AccountContext);
+  const { register, handleSubmit, errors, resetField, reset } =
+    useContext(RealtimeContext);
   const dispatch = useDispatch();
 
   const handleScheduleClassSession = (schedule) => {
+    console.log(schedule);
     schedule.startDate = new Date(startDate);
     schedule.endDate = new Date(endDate);
     schedule.classroomId = classroomId;
@@ -60,8 +61,8 @@ const ScheduleClassSession = () => {
     if (isSuccess) {
       dispatch(setShowScheduleForm(false));
       dispatch(addMessage(data.savedSessionMessage.message));
-      resetField('title', { keepValue: false });
-      resetField('description', { keepValue: false });
+      resetField('title');
+      resetField('description');
       const notification = new Notification('Success', {
         body: 'Class Session Scheduled Successfully',
       });
@@ -78,6 +79,7 @@ const ScheduleClassSession = () => {
           <button
             onClick={() => {
               dispatch(setShowScheduleForm(false));
+              reset();
             }}
             type="button"
             className="absolute top-3 right-2.5 text-gray-400  bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
@@ -135,8 +137,8 @@ const ScheduleClassSession = () => {
               <div className="flex w-full justify-center">
                 <button
                   disabled={!isValidTime}
-                  type="submit"
-                  className="text-white  bg-sidebar hover:bg-sidebarHover focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  // type="submit"
+                  className="text-white  bg-sidebar hover:bg-sidebarHover focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
                 >
                   Send new Class Session
                 </button>

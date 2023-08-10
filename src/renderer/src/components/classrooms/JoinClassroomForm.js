@@ -1,29 +1,26 @@
 import React, { useContext, useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
-import AccountContext from '../../context/accountContext';
 import Input from '../App/Input';
 import { setJoinClassroom, useVerifyClassroomCodeMutation } from '../../store';
 import { useDispatch } from 'react-redux';
-import ErrorMessageA from '../error/ErrorMessageA';
 import ErrorMessage from '../error/ErrorMessage';
 import { useNavigate } from 'react-router-dom';
+import RealtimeContext from '../../context/realtimeContext';
 const JoinClassroomForm = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, errors, resetField } =
-    useContext(AccountContext);
+  const { register, handleSubmit, errors, resetField, reset } =
+    useContext(RealtimeContext);
   const dispatch = useDispatch();
-  const [verifyClassroomCode, { isSuccess, data, isError, error,reset }] =
+  const [verifyClassroomCode, { isSuccess, data, isError, error }] =
     useVerifyClassroomCodeMutation();
   useEffect(() => {
     if (isSuccess) {
-        const classroomId = data.classroomId._id
-        dispatch(setJoinClassroom(false));
-        resetField('code')
-        navigate(classroomId+'/join');
-
-      }
-  },[isSuccess])
-
+      const classroomId = data.classroomId._id;
+      dispatch(setJoinClassroom(false));
+      resetField('code');
+      navigate(classroomId + '/join');
+    }
+  }, [isSuccess]);
 
   const handleJoinClassroom = (code) => {
     verifyClassroomCode(code);
@@ -34,6 +31,8 @@ const JoinClassroomForm = () => {
         <div className="relative py-8 px-5 md:px-10 bg-white opacity-100 shadow-md rounded border border-gray-400">
           <button
             onClick={() => {
+              reset();
+
               dispatch(setJoinClassroom(false));
             }}
             type="button"

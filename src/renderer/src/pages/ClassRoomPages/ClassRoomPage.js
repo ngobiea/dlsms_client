@@ -34,8 +34,10 @@ const ClassRoomPage = () => {
   });
   useEffect(() => {
     dispatch(setClassRoomId(classroomId));
-    socket.emit('update-classroom', classroomId);
-  }, []);
+    if (socket) {
+      socket.emit('update-classroom', classroomId);
+    }
+  }, [socket]);
 
   useEffect(() => {
     if (isSuccess) {

@@ -2,16 +2,16 @@ import React, { useContext,useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCreateClassroom, useCreateClassroomMutation } from '../../store';
-import AccountContext from '../../context/accountContext';
 import Input from '../App/Input';
 import TextArea from '../App/TextArea';
+import RealtimeContext from '../../context/realtimeContext';
 
 const CreateClassroomForm = () => {
   const { accountType } = useSelector((state) => {
     return state.account;
   });
   const { register, handleSubmit, errors, resetField } =
-    useContext(AccountContext);
+    useContext(RealtimeContext);
   const [addClassroom, { isSuccess }] = useCreateClassroomMutation();
 
   const dispatch = useDispatch();
