@@ -5,7 +5,6 @@ import { generateUniqueId } from '../../utils/util';
 const FileInput = () => {
   const [files, setFiles] = useState([]);
 
-  
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);
     newFiles.forEach((file) => {
