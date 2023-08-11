@@ -71,6 +71,7 @@ const RealtimeProvider = ({ children }) => {
       store.dispatch(setMessages(value.messages));
     });
     socket.on('classroom-schedule-message', (value) => {
+      console.log('received classroom schedule message event')
       classroomScheduleMessageHandle(value, navigate);
     });
   };

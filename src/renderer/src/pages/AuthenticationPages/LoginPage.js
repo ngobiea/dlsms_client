@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import logo from '../../../public/images/dlsms2.png';
 import AccountContext from '../../context/accountContext';
 import { Link } from 'react-router-dom';
@@ -6,15 +6,15 @@ import UserCard from '../../components/accountComponents/UserCard';
 import Input from '../../components/accountComponents/Input';
 import { useLoginUserMutation, changeEmail } from '../../store';
 import ErrorMessage from '../../components/error/ErrorMessage';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import EmailVerificationError from '../../components/error/EmailVerificationError';
 
 const LoginPage = () => {
   const { accountType } = useSelector((state) => {
     return state.account;
   });
-  const { register, handleSubmit, errors } = useContext(AccountContext);
+  const { register, handleSubmit, errors, setValue } =
+    useContext(AccountContext);
   const [loginUser, { isError, isSuccess, reset, data, error }] =
     useLoginUserMutation();
   const dispatch = useDispatch();
@@ -23,7 +23,9 @@ const LoginPage = () => {
     dispatch(changeEmail(user.email));
     loginUser(user);
   };
-
+  useEffect(() => {
+    setValue('email', JSON.parse(localStorage.getItem('email')));
+  }, []);
   if (isSuccess) {
     const expirationDate = 1713117329.737435;
     const isLogin = {
@@ -33,6 +35,7 @@ const LoginPage = () => {
       expirationDate,
     };
     localStorage.setItem('user', JSON.stringify(data.userDetails));
+    localStorage.setItem('email', JSON.stringify(data.userDetails.email));
     window.account.login(isLogin);
   }
 
