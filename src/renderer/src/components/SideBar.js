@@ -24,7 +24,6 @@ const SideBar = () => {
       className="absolute inset-y-0 left-0 w-20 z-10  bg-sidebar"
       aria-label="Sidebar"
     >
-
       <div className="pt-10">
         <NavLink
           className={(navData) =>
@@ -56,18 +55,15 @@ const SideBar = () => {
           <span className="text-xs font-light">Assignments </span>
         </NavLink>
         {accountType === 'tutor' ? (
-          <NavLink
+          <div
             onClick={() => {
               window.account.openMonitorWindow('openMonitorWindow');
             }}
-            className={(navData) =>
-              navData.isActive ? activeClass : inActiveClass
-            }
-            to="/monitor"
+            className={inActiveClass}
           >
             <MdOutlineMonitor className="w-6 h-6 text-white transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
             <span className="text-xs font-light">Monitor </span>
-          </NavLink>
+          </div>
         ) : (
           ''
         )}

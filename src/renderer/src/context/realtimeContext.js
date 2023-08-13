@@ -17,26 +17,18 @@ import { classroomScheduleMessageHandle } from '../realTimeCommunication/classro
 
 const userDetails = JSON.parse(localStorage.getItem('user'));
 let socket;
-// if (userDetails) {
-  // const jwtToken = userDetails.token;
-  // socket = io('http://localhost:5001', {
-  //   auth: {
-  //     token: jwtToken,
-  //   },
-  // });
-// }
 
 const RealtimeContext = createContext();
 
 const RealtimeProvider = ({ children }) => {
-   const {
-     register,
-     handleSubmit,
-     resetField,
-     reset,
-     formState: { errors, isSubmitSuccessful },
-     setValue,
-   } = useForm();
+  const {
+    register,
+    handleSubmit,
+    resetField,
+    reset,
+    formState: { errors, isSubmitSuccessful },
+    setValue,
+  } = useForm();
   const { accountType } = store.getState().account;
 
   const navigate = useNavigate();
@@ -71,7 +63,7 @@ const RealtimeProvider = ({ children }) => {
       store.dispatch(setMessages(value.messages));
     });
     socket.on('classroom-schedule-message', (value) => {
-      console.log('received classroom schedule message event')
+      console.log('received classroom schedule message event');
       classroomScheduleMessageHandle(value, navigate);
     });
   };

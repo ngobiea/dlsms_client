@@ -1,51 +1,37 @@
 const { session } = require('electron');
 
-let ses = session.defaultSession;
-const getCookies = () => {
-  const cookies = ses.cookies
-    .get({})
-    .then((data) => {
-      return data;
-    })
-    .catch((error) => {
-      console.log(error);
-      return [];
-    });
-  return cookies;
+const ses = session.defaultSession;
+const getCookies = async () => {
+  try {
+    return await ses.cookies.get({});
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };
-const isSetCookie = (data) => {
-  const result = ses.cookies
-    .get({ name: data })
-    .then((cookies) => {
-      if (cookies.length !== 0) {
-        return true;
-      }
-      return false;
-    })
-    .catch((error) => {
-      console.log(error);
-      return false;
-    });
-  return result;
+const isSetCookie = async (data) => {
+  try {
+    const cookies = await ses.cookies
+      .get({ name: data });
+    return cookies.length !== 0;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 };
-const getCookie = (data) => {
-  const result = ses.cookies
-    .get({ name: data })
-    .then((cookies) => {
-      // console.log(cookies);
-      return cookies;
-    })
-    .catch((error) => {
-      console.log(error);
-      return [];
-    });
-  return result;
+const getCookie = async (data) => {
+  try {
+    return await ses.cookies.get({ name: data });
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };
 
 const setCookies = (data) => {
   ses.cookies
     .set(data)
-    .then((result) => {})
+    .then(() => {})
     .catch((err) => {
       console.log(err);
     });

@@ -1,7 +1,14 @@
 import React from 'react';
+import TitleNav from './components/TitleNav';
+import MonitorPage from './pages/MonitorPages/MonitorPage';
 
 const MonitorApp = () => {
-  return <div>MonitorApp</div>;
+  return (
+    <>
+      <TitleNav />
+      <MonitorPage />
+    </>
+  );
 };
 
 export default MonitorApp;
