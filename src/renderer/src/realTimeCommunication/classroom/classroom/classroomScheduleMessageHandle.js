@@ -7,9 +7,9 @@ export const classroomScheduleMessageHandle = (data, navigate) => {
   const foundClassroom = classrooms.find(
     (classR) => classR._id.toString() === data.classroomId.toString()
   );
-  console.log(classrooms)
+  console.log(classrooms);
   console.log(foundClassroom);
-  console.log(accountType)
+  console.log(accountType);
   if (foundClassroom && accountType === 'student') {
     if (classroomId === data.classroomId.toString()) {
       store.dispatch(addMessage(data.message));

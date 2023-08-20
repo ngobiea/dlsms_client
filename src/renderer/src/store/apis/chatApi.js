@@ -13,5 +13,4 @@ const chatApi = createApi({
       return header;
     },
   }),
-  
 });

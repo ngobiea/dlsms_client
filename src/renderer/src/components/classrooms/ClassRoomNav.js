@@ -9,9 +9,9 @@ const ClassroomNav = () => {
   });
 
   return (
-    <nav className="bg-gray-100 fixed w-full z-0 top-10 left-0 border-b border-gray-200">
+    <nav className="bg-gray-100 absolute w-full mr-20 border-b border-gray-200">
       <div className="flex flex-wrap items-center justify-between  p-4">
-        <span className="self-center text-2xl font-semibold whitespace-nowrap ml-24">
+        <span className="self-center text-2xl font-semibold whitespace-nowrap ">
           ClassRooms
         </span>
         <div
@@ -22,7 +22,7 @@ const ClassroomNav = () => {
               dispatch(setJoinClassroom(true));
             }
           }}
-          className="flex md:order-2 cursor-pointer mr-3 box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);"
+          className="flex pr-20 cursor-pointer mr-3 box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);"
         >
           <button
             type="button"

@@ -1,14 +1,14 @@
-const { BrowserWindow, screen } = require("electron");
-const path = require("path");
-const windowStateKeeper = require('electron-window-state')
+const { BrowserWindow, screen } = require('electron');
+const path = require('path');
+const windowStateKeeper = require('electron-window-state');
 
 exports.createAppWindow = (isShow) => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
-  let winState = windowStateKeeper({
+  const winState = windowStateKeeper({
     defaultWidth: width,
     defaultHeight: height,
-  })
+  });
   const mainWindow = new BrowserWindow({
     width: winState.width,
     height: winState.height,
@@ -25,13 +25,12 @@ exports.createAppWindow = (isShow) => {
       height: 40,
     },
 
-    title: 'main',
+    title: 'Session',
     show: isShow,
     icon: path.join(__dirname, '../../renderer/public/images/dlsms2.png'),
-    
   });
-  mainWindow.loadFile(path.join(__dirname, "../../renderer/public/index.html"));
+  mainWindow.loadFile(path.join(__dirname, '../../renderer/public/index.html'));
 
-  winState.manage(mainWindow)
+  winState.manage(mainWindow);
   return mainWindow;
 };

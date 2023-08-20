@@ -1,9 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
-import { faker } from "@faker-js/faker";
-import { MdMicNone, MdVideocam, MdStopScreenShare,MdPeopleAlt } from "react-icons/md";
-import { BsArrowsAngleExpand, BsShieldCheck } from "react-icons/bs";
-import { HiSpeakerWave } from "react-icons/hi2";
-import screen from '../../../public/images/Screenshot.png'
+import React, { useRef, useState, useEffect } from 'react';
+import { faker } from '@faker-js/faker';
+import {
+  MdMicNone,
+  MdVideocam,
+  MdStopScreenShare,
+  MdPeopleAlt,
+} from 'react-icons/md';
+import { BsArrowsAngleExpand, BsShieldCheck } from 'react-icons/bs';
+import { HiSpeakerWave } from 'react-icons/hi2';
+import screen from '../../../public/images/Screenshot.png';
 
 const SessionCard = () => {
   const [imageStream, setImageStream] = useState(null);
@@ -14,7 +19,9 @@ const SessionCard = () => {
       .then((stream) => {
         setImageStream(stream);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err)
+      });
   }, []);
   useEffect(() => {
     if (videoRef.current) {

@@ -1,19 +1,27 @@
-import React, { createContext, useEffect, useMemo } from 'react';
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  useRef,
+  useReducer,
+} from 'react';
 import io from 'socket.io-client';
 import { logoutHandler } from '../utils/util';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-
 import {
   useFetchClassroomsQuery,
   setClassrooms,
   setStudents,
   store,
   setMessages,
+  setVideoEnable,
+  setMicEnable,
 } from '../store';
 import { useDispatch } from 'react-redux';
 import { joinClassroomHandler } from '../realTimeCommunication/classroom/joinClassroomHandler';
 import { classroomScheduleMessageHandle } from '../realTimeCommunication/classroom/classroom/classroomScheduleMessageHandle';
+import { params } from '../utils/mediasoup/params';
+import { mediasoupReducer } from '../utils/realTimeContext/reducers';
 
 const userDetails = JSON.parse(localStorage.getItem('user'));
 let socket;
@@ -21,20 +29,24 @@ let socket;
 const RealtimeContext = createContext();
 
 const RealtimeProvider = ({ children }) => {
-  const {
-    register,
-    handleSubmit,
-    resetField,
-    reset,
-    formState: { errors, isSubmitSuccessful },
-    setValue,
-  } = useForm();
-  const { accountType } = store.getState().account;
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const videoRef = useRef();
+  const { accountType } = store.getState().account;
   const { data, isSuccess } = useFetchClassroomsQuery(accountType);
+
+  const [localStream, setLocalStream] = useState(null);
+  const [remoteStreams, setRemoteStreams] = useState([]);
+  const [state, dispatchReducer] = useReducer(mediasoupReducer, {
+    device: null,
+    rtpCapabilities: null,
+    producerTransport: null,
+    consumerTransports: [],
+    audioProducer: null,
+    videoProducer: null,
+    audioParams: { params },
+    videoParams: { params },
+  });
 
   const connectWithSocketServer = () => {
     const jwtToken = userDetails.token;
@@ -78,15 +90,95 @@ const RealtimeProvider = ({ children }) => {
     }
   }, [data, isSuccess]);
 
+  const setUpWebCam = (video, audio) => {
+    if (video || audio) {
+      navigator.mediaDevices
+        .getUserMedia({
+          audio,
+          video: video
+            ? {
+                width: {
+                  min: 560,
+                  max: 1920,
+                },
+                height: {
+                  min: 400,
+                  max: 1080,
+                },
+              }
+            : video,
+        })
+        .then((mediaStream) => {
+          videoRef.current.srcObject = mediaStream;
+          setLocalStream(mediaStream);
+          // setAudioParams({
+          //   track: mediaStream.getAudioTracks()[0],
+          //   ...audioParams,
+          // });
+          // setAudioParams({
+          //   track: mediaStream.getVideoTracks()[0],
+          //   ...videoParams,
+          // });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+  const disableWebcam = () => {
+    const { isMicEnable } = store.getState().session;
+    const tracks = localStream.getTracks();
+    tracks.forEach((track) => {
+      track.stop();
+    });
+
+    if (isMicEnable) {
+      setUpWebCam(false, isMicEnable);
+    } else {
+      setLocalStream(null);
+    }
+  };
+
+  const toggleCamera = () => {
+    const { isMicEnable } = store.getState().session;
+    localStream.getVideoTracks()[0].enabled = isMicEnable;
+    // console.log(isVideoEnable);
+    // if (isVideoEnable) {
+    //   const tracks = videoRef.current.srcObject.getTracks();
+    //   tracks.forEach((track) => {
+    //     track.stop();
+    //   });
+    //   store.dispatch(setVideoEnable(false));
+    // } else {
+    //       videoRef.current.srcObject = mediaStream;
+
+    // }
+
+    // localStream.getVideoTracks()[0].enabled = !isVideoEnable;
+    // const tracks = videoRef.current.srcObject.getTracks();
+    // tracks.forEach((track) => {
+    //   track.stop();
+    // });
+
+    // }
+  };
+  const enabledMic = (value) => {
+    localStream.getAudioTracks()[0].enabled = true;
+  };
+  const disableMic = () => {
+    localStream.getAudioTracks()[0].enabled = false;
+  };
+
   const values = {
     socket,
-    register,
-    handleSubmit,
-    resetField,
-    reset,
-    errors,
-    isSubmitSuccessful,
-    setValue,
+    setUpWebCam,
+    localStream,
+    remoteStreams,
+    videoRef,
+    disableWebcam,
+    toggleCamera,
+    enabledMic,
+    disableMic,
   };
 
   return (

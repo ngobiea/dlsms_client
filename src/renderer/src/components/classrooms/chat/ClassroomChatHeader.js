@@ -10,6 +10,9 @@ const ClassroomChatHeader = ({ show }) => {
   const { isShowSchedule } = useSelector((state) => {
     return state.modal;
   });
+  const { accountType} = useSelector((state) => {
+    return state.account;
+  });
 
   const showClass =
     'z-10 fixed top-20 right-7 font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44';
@@ -48,7 +51,7 @@ const ClassroomChatHeader = ({ show }) => {
           Recordings
         </NavLink>
       </div>
-      <div className="mr-5">
+      { accountType === 'tutor' && <div className="mr-5">
         <div className="flex items-center justify-start">
           <button className="h-9 px-2 border-y border-l border-green-600  text-green-800 rounded-l hover:bg-gray-100 ">
             Session
@@ -82,7 +85,7 @@ const ClassroomChatHeader = ({ show }) => {
             </li>
           </ul>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

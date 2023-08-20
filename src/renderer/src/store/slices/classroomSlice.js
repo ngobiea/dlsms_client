@@ -34,7 +34,7 @@ const classroomSlice = createSlice({
     setCode(state, action) {
       state.code = action.payload;
     },
-    setTuTor(state, action) {
+    setTutor(state, action) {
       state.tutor = action.payload;
     },
     setStudents(state, action) {
@@ -51,7 +51,7 @@ export const {
   setName,
   setDescription,
   setCode,
-  setTuTor,
+  setTutor,
   setStudents,
   addStudent,
   setClassrooms,

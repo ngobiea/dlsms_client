@@ -6,6 +6,13 @@ module.exports = {
       margin: {
         chat: '24rem',
       },
+      height: {
+        welcome: 'calc(100vh - 6rem)',
+        webcam: '25rem',
+      },
+      width: {
+        webcam: '35rem',
+      },
     },
     colors: {
       title: '#064f32',

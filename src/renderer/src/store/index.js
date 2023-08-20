@@ -24,11 +24,11 @@ import {
   setName,
   setDescription,
   setCode,
-  setTuTor,
   setStudents,
   addStudent,
   setClassrooms,
   addClassroom,
+  setTutor,
 } from './slices/classroomSlice';
 
 import { assignmentReducer } from './slices/assignmentSlice';
@@ -43,7 +43,16 @@ import {
 } from './slices/appSlice';
 
 import { chatReducer, addMessage, setMessages } from './slices/chatSlice';
-
+import {
+  sessionReducer,
+  setMicEnable,
+  setVideoEnable,
+  setIsShowChat,
+  setIsShowParticipants,
+  setIsShareScreen,
+  setIsRecording,
+  setIsJoinedSession,
+} from './slices/sessionSlice';
 import { accountApi } from './apis/accountsApi';
 import { classroomApi } from './apis/classroomsApi';
 
@@ -54,6 +63,7 @@ const store = configureStore({
     classroom: classroomReducer,
     assignment: assignmentReducer,
     app: appReducer,
+    session: sessionReducer,
     chat: chatReducer,
     [accountApi.reducerPath]: accountApi.reducer,
     [classroomApi.reducerPath]: classroomApi.reducer,
@@ -92,7 +102,7 @@ export {
 
   //classroom Slice
   setStudents,
-  setTuTor,
+  setTutor,
   setCode,
   setDescription,
   setName,
@@ -104,6 +114,15 @@ export {
   //chat slice
   addMessage,
   setMessages,
+
+  //session slice
+  setMicEnable,
+  setVideoEnable,
+  setIsShowChat,
+  setIsShowParticipants,
+  setIsShareScreen,
+  setIsRecording,
+  setIsJoinedSession,
 };
 
 // Account Apis
@@ -123,5 +142,3 @@ export {
   usePostScheduleClassSessionMutation,
   usePostJoinMutation,
 } from './apis/classroomsApi';
-
-

@@ -8,7 +8,7 @@ import './classroomPage.css';
 import {
   useFetchClassroomQuery,
   setStudents,
-  setTuTor,
+  setTutor,
   setName,
   setCode,
   setDescription,
@@ -44,7 +44,7 @@ const ClassRoomPage = () => {
       const { name, code, tutor, description, students, messages } =
         data.classroom;
       dispatch(setName(name));
-      dispatch(setTuTor(tutor));
+      dispatch(setTutor(tutor));
       dispatch(setStudents(students));
       dispatch(setCode(code));
       dispatch(setDescription(description));

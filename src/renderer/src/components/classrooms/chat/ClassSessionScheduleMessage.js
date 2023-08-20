@@ -1,7 +1,14 @@
 import React from 'react';
 import { MdOutlineCalendarMonth } from 'react-icons/md';
-import { formatDateTime,formatCustomDateTime } from '../../../utils/dateTime';
+import { formatDateTime, formatCustomDateTime } from '../../../utils/dateTime';
+import { useSelector } from 'react-redux';
 const ClassSessionScheduleMessage = ({ message }) => {
+  const { accountType } = useSelector((state) => {
+    return state.account;
+  });
+  const handleSession = () => {
+    window.account.openSessionWindow('openSessionWindow');
+  };
   return (
     <div className="bg-gray-300 transition duration-350 ease-in-out mx-2 rounded-lg rounded-bl-none">
       <div className="flex items-center pl-3 ">
@@ -35,12 +42,11 @@ const ClassSessionScheduleMessage = ({ message }) => {
             </div>
           </div>
           <button
-            type="button"
+            onClick={handleSession}
             className="text-green-800 bg-transparent border border-green-800 hover:bg-green-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-green-600 dark:border-green-600 dark:text-green-400 dark:hover:text-white dark:focus:ring-green-800"
             data-dismiss-target="#alert-additional-content-3"
-            aria-label="Close"
           >
-            Join Session
+            {accountType === 'tutor' ? 'Start Session' : 'Join Session'}
           </button>
         </div>
       </div>

@@ -5,11 +5,11 @@ import { setJoinClassroom, useVerifyClassroomCodeMutation } from '../../store';
 import { useDispatch } from 'react-redux';
 import ErrorMessage from '../error/ErrorMessage';
 import { useNavigate } from 'react-router-dom';
-import RealtimeContext from '../../context/realtimeContext';
+import AccountContext from '../../context/accountContext';
 const JoinClassroomForm = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, errors, resetField, reset } =
-    useContext(RealtimeContext);
+    useContext(AccountContext);
   const dispatch = useDispatch();
   const [verifyClassroomCode, { isSuccess, data, isError, error }] =
     useVerifyClassroomCodeMutation();

@@ -10,12 +10,12 @@ const ClassRoomsPage = () => {
   });
 
   return (
-    <>
+    <div className='relative pt-10 pl-20 h-screen overflow-hidden'>
       <ClassroomNav />
       {isCreateClassroom && <CreateClassroomForm />}
       {isJoinClassroom && <JoinClassroomForm />}
       <ClassRooms />
-    </>
+    </div>
   );
 };
 

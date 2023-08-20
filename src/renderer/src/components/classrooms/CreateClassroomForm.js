@@ -4,14 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCreateClassroom, useCreateClassroomMutation } from '../../store';
 import Input from '../App/Input';
 import TextArea from '../App/TextArea';
-import RealtimeContext from '../../context/realtimeContext';
+import AccountContext from '../../context/accountContext';
+
 
 const CreateClassroomForm = () => {
   const { accountType } = useSelector((state) => {
     return state.account;
   });
   const { register, handleSubmit, errors, resetField } =
-    useContext(RealtimeContext);
+    useContext(AccountContext);
   const [addClassroom, { isSuccess }] = useCreateClassroomMutation();
 
   const dispatch = useDispatch();

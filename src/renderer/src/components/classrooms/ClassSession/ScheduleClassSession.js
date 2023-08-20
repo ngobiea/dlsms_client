@@ -8,7 +8,7 @@ import {
   usePostScheduleClassSessionMutation,
   addMessage,
 } from '../../../store';
-import RealtimeContext from '../../../context/realtimeContext';
+import AccountContext from '../../../context/accountContext';
 import Input from '../../App/Input';
 import TextArea from '../../App/TextArea';
 import DateInput from '../../App/DateInput';
@@ -27,7 +27,7 @@ const ScheduleClassSession = () => {
   const [scheduleClassroom, { isSuccess, data }] =
     usePostScheduleClassSessionMutation();
   const { register, handleSubmit, errors, resetField, reset } =
-    useContext(RealtimeContext);
+    useContext(AccountContext);
   const dispatch = useDispatch();
 
   const handleScheduleClassSession = (schedule) => {

@@ -3,10 +3,9 @@
 
 const { contextBridge, ipcRenderer } = require('electron');
 
-
 contextBridge.exposeInMainWorld('account', {
   exitApp: () => ipcRenderer.send('exitApp'),
-  login: (isLogin) => ipcRenderer.send('login',isLogin),
+  login: (isLogin) => ipcRenderer.send('login', isLogin),
   logout: () => ipcRenderer.send('logout'),
   getEmail: (email) => ipcRenderer.on('getEmail', email),
   getUserType: (userType) => ipcRenderer.on('getUserType', userType),
@@ -15,5 +14,7 @@ contextBridge.exposeInMainWorld('account', {
   getAuth: (auth) => ipcRenderer.on('getAuth', auth),
   copyCode: (code) => ipcRenderer.send('copyCode', code),
   openMonitorWindow: () => ipcRenderer.send('openMonitorWindow'),
-  getPaths:()=>ipcRenderer.invoke('paths')
+  getPaths: () => ipcRenderer.invoke('paths'),
+  openSessionWindow: () => ipcRenderer.send('openSessionWindow'),
+  closeSessionWindow: () => ipcRenderer.send('closeSessionWindow'),
 });

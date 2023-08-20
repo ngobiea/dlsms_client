@@ -4,8 +4,9 @@ import ClassSessionScheduleMessage from './ClassSessionScheduleMessage';
 import ExamSessionScheduleMessage from './ExamSessionScheduleMessage';
 import GeneralMessage from './GeneralMessage';
 import SenderMessage from './SenderMessage';
+import WelcomeMessage from './WelcomeMessage';
 import { useSelector } from 'react-redux';
-const ClassroomChatMessage = ({ message }) => {
+const ClassroomChatMessage = () => {
   const { messages } = useSelector((state) => state.chat);
   const messagesRef = useRef(null);
   useEffect(() => {
@@ -19,6 +20,7 @@ const ClassroomChatMessage = ({ message }) => {
         ref={messagesRef}
         className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
       >
+        <WelcomeMessage />
         {messages.map((message) => {
           if (message.type === 'classSession') {
             return (
@@ -42,6 +44,7 @@ const ClassroomChatMessage = ({ message }) => {
               <GeneralMessage message={message} key={message._id.toString()} />
             );
           }
+          return null;
         })}
       </div>
     </>

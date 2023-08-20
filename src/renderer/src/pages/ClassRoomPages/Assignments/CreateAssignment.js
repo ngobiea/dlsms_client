@@ -3,9 +3,10 @@ import Input from '../../../components/App/Input';
 import DateInput from '../../../components/App/DateInput';
 import RealtimeContext from '../../../context/realtimeContext';
 import FileInput from '../../../components/App/FileInput';
+import AccountContext from '../../../context/accountContext';
 
 const CreateAssignment = () => {
-  const { register, handleSubmit, errors } = useContext(RealtimeContext);
+  const { register, handleSubmit, errors } = useContext(AccountContext);
   const handleCrateAssignment = (data) => {
     
   };

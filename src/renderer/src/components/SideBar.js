@@ -21,7 +21,7 @@ const SideBar = () => {
   return (
     <aside
       id="logo-sidebar"
-      className="absolute inset-y-0 left-0 w-20 z-10  bg-sidebar"
+      className="fixed h-screen left-0 w-20 z-40 top-0  bg-sidebar"
       aria-label="Sidebar"
     >
       <div className="pt-10">

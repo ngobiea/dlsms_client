@@ -1,8 +1,9 @@
 const { app, ipcMain, clipboard } = require('electron');
 const path = require('path');
-const accountWindow = require('./accountWindow');
-const mainAppWindow = require('./mainAppWindow');
-const monitorWindow = require('./monitorWindow');
+const { createAccountWindow } = require('./accountWindow');
+const { createAppWindow } = require('./mainAppWindow');
+const { createMonitorWindow } = require('./monitorWindow');
+const { createSessionWindow } = require('./sessionWindow');
 const BrowserHistory = require('node-browser-history');
 const { readyToShow } = require('../util/events');
 exports.createWindow = async () => {
@@ -17,15 +18,16 @@ exports.createWindow = async () => {
   let mainWindow;
   let accWindow;
   let monitWindow;
+  let sessionWindow;
 
   const cookie = await getCookie('isLogin');
   if (cookie.length > 0) {
-    mainWindow = mainAppWindow.createAppWindow(false);
+    mainWindow = createAppWindow(false);
     mainWindow.on(readyToShow, () => {
       mainWindow.show();
     });
   } else {
-    accWindow = accountWindow.createAccountWindow(false);
+    accWindow = createAccountWindow(false);
     accWindow.on(readyToShow, () => {
       accWindow.show();
     });
@@ -36,7 +38,7 @@ exports.createWindow = async () => {
   });
   ipcMain.on('openMonitorWindow', (_e) => {
     if (!monitWindow) {
-      monitWindow = monitorWindow.createMonitorWindow(false);
+      monitWindow = createMonitorWindow(false);
     }
     monitWindow.on(readyToShow, () => {
       monitWindow.show();
@@ -46,10 +48,22 @@ exports.createWindow = async () => {
     });
   });
 
+  ipcMain.on('openSessionWindow', (_e) => {
+    if (!sessionWindow) {
+      sessionWindow = createSessionWindow(false);
+    }
+    sessionWindow.on(readyToShow, () => {
+      sessionWindow.show();
+    });
+    sessionWindow.on('closed', () => {
+      sessionWindow = null;
+    });
+  });
+
   ipcMain.on('login', (_e, isLogin) => {
     setCookies(isLogin);
     accWindow.close();
-    mainWindow = mainAppWindow.createAppWindow(false);
+    mainWindow = createAppWindow(false);
     mainWindow.on('ready-to-show', () => {
       mainWindow.show();
     });
@@ -57,12 +71,19 @@ exports.createWindow = async () => {
   ipcMain.on('logout', (_e) => {
     removeCookies('https://dlsms.com', 'isLogin');
     mainWindow.close();
-    accWindow = accountWindow.createAccountWindow(false);
+    accWindow = createAccountWindow(false);
     accWindow.on('ready-to-show', () => {
       accWindow.show();
     });
   });
-
+  ipcMain.on('closeSessionWindow', (_e) => {
+    sessionWindow.close();
+  });
+  if (sessionWindow) {
+    sessionWindow.on('closed', () => {
+      sessionWindow = null;
+    });
+  }
   ipcMain.on('copyCode', (_e, code) => {
     clipboard.writeText(code);
   });
