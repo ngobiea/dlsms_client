@@ -21,7 +21,10 @@ import { useDispatch } from 'react-redux';
 import { joinClassroomHandler } from '../realTimeCommunication/classroom/joinClassroomHandler';
 import { classroomScheduleMessageHandle } from '../realTimeCommunication/classroom/classroom/classroomScheduleMessageHandle';
 import { params } from '../utils/mediasoup/params';
-import { mediasoupReducer } from '../utils/realTimeContext/reducers';
+import {
+  mediasoupReducer,
+  SET_VIDEO_AND_AUDIO_STREAM,
+} from '../utils/realTimeContext/reducers';
 
 const userDetails = JSON.parse(localStorage.getItem('user'));
 let socket;
@@ -111,14 +114,10 @@ const RealtimeProvider = ({ children }) => {
         .then((mediaStream) => {
           videoRef.current.srcObject = mediaStream;
           setLocalStream(mediaStream);
-          // setAudioParams({
-          //   track: mediaStream.getAudioTracks()[0],
-          //   ...audioParams,
-          // });
-          // setAudioParams({
-          //   track: mediaStream.getVideoTracks()[0],
-          //   ...videoParams,
-          // });
+          dispatchReducer({
+            type: SET_VIDEO_AND_AUDIO_STREAM,
+            payload: mediaStream,
+          });
         })
         .catch((error) => {
           console.log(error);
