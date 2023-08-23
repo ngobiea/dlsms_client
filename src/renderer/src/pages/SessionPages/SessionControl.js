@@ -21,6 +21,7 @@ import {
 import RealtimeContext from '../../context/realtimeContext';
 import { useSelector, useDispatch } from 'react-redux';
 import { PiPhoneDisconnectFill, PiRecordFill } from 'react-icons/pi';
+import { ipcRenderer } from 'electron';
 
 const SessionControl = () => {
   const dispatch = useDispatch();
@@ -104,10 +105,10 @@ const SessionControl = () => {
     }
   };
   const handleLeaveSession = () => {
-    window.account.closeSessionWindow('closeSessionWindow');
+    ipcRenderer.send('closeSessionWindow');
   };
   const handleEndSession = () => {
-    window.account.closeSessionWindow('closeSessionWindow');
+    ipcRenderer.send('closeSessionWindow');
   };
   const activeBorderClass =
     'flex flex-col px-2 mx-2 text-green-800 cursor-pointer hover:text-green-500 hover:border-green-500 border-b-2 border-green-800';

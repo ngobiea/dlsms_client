@@ -39,7 +39,7 @@ useEffect(() => {
       <div className="close">
         <p className="text-right absolute top-0 right-0 text-2xl font-semibold mr-4">
           <span
-            onClick={() => window.account.exitApp()}
+            onClick={() => ipcRenderer.send('exitApp')}
             className="cursor-pointer text-green-900"
           >
             X
@@ -113,12 +113,7 @@ useEffect(() => {
             errorMessage={'Password is required'}
             errors={errors}
           />
-          {isError && (
-            <ErrorMessage
-              error={error}
-              reset={reset}
-            />
-          )}
+          {isError && <ErrorMessage error={error} reset={reset} />}
           <div className="flex -mx-3">
             <div className="w-full px-3 mb-1">
               <p className="text-white">

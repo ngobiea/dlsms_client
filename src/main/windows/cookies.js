@@ -11,8 +11,7 @@ const getCookies = async () => {
 };
 const isSetCookie = async (data) => {
   try {
-    const cookies = await ses.cookies
-      .get({ name: data });
+    const cookies = await ses.cookies.get({ name: data });
     return cookies.length !== 0;
   } catch (error) {
     console.log(error);

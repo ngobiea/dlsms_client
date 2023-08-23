@@ -6,7 +6,9 @@ exports.createSessionWindow = (isShow) => {
     width: parseFloat(process.env.sessionWindowWidth),
     height: parseFloat(process.env.sessionWindowHeight),
     webPreferences: {
-      preload: path.join(__dirname, '../../preload/preload.js'),
+      // preload: path.join(__dirname, '../../preload/preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
     autoHideMenuBar: true,
     titleBarStyle: 'hidden',
@@ -18,9 +20,20 @@ exports.createSessionWindow = (isShow) => {
     title: 'main',
     show: isShow,
     icon: path.join(__dirname, '../../renderer/public/images/dlsms2.png'),
+    
   });
   sessionWindow.loadFile(
     path.join(__dirname, '../../renderer/public/session.html')
   );
+    sessionWindow.webContents.session.setCertificateVerifyProc(
+      (request, callback) => {
+        const { hostname } = request;
+        if (hostname === 'localhost') {
+          callback(0);
+        } else {
+          callback(-2);
+        }
+      }
+    );
   return sessionWindow;
 };

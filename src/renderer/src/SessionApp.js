@@ -4,6 +4,7 @@ import ClassSessionSetup from './pages/SessionPages/ClassSessionSetup';
 import ClassSession from './pages/SessionPages/ClassSession';
 import TitleNav from './components/TitleNav';
 const SessionApp = () => {
+  
   return (
     <>
       <TitleNav />

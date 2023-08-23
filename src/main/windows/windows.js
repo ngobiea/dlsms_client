@@ -6,15 +6,23 @@ const { createMonitorWindow } = require('./monitorWindow');
 const { createSessionWindow } = require('./sessionWindow');
 const BrowserHistory = require('node-browser-history');
 const { readyToShow } = require('../util/events');
+
 exports.createWindow = async () => {
-  console.log(process.env.PASSWORD);
-  const { setCookies, getCookie, removeCookies } = require('./cookies');
+
+  const {
+    setCookies,
+    getCookie,
+    removeCookies,
+  } = require('./cookies');
+
+
   const modelsPath = app.isPackaged
     ? path.join(process.resourcesPath, 'public', 'models')
     : path.join(__dirname, '../../renderer/public/models');
   ipcMain.handle('paths', () => {
     return { modelsPath };
   });
+
   let mainWindow;
   let accWindow;
   let monitWindow;

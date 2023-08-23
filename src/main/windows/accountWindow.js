@@ -6,7 +6,9 @@ exports.createAccountWindow = (isShow) => {
     height: 750,
     frame: false,
     webPreferences: {
-      preload: path.join(__dirname, '../../preload/preload.js'),
+      // preload: path.join(__dirname, '../../preload/preload.js'),
+      contextIsolation: false,
+      nodeIntegration: true,
     },
     backgroundColor: '#759278',
     resizable: false,
@@ -17,5 +19,16 @@ exports.createAccountWindow = (isShow) => {
   accountWindow.loadFile(
     path.join(__dirname, '../../renderer/public/account.html')
   );
+  accountWindow.webContents.session.setCertificateVerifyProc(
+    (request, callback) => {
+      const { hostname } = request;
+      if (hostname === 'localhost') {
+        callback(0);
+      } else {
+        callback(-2);
+      }
+    }
+  );
+
   return accountWindow;
 };

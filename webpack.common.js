@@ -6,7 +6,7 @@ module.exports = {
     index: './src/renderer/src/entries/index.js',
     account: './src/renderer/src/entries/account.js',
     monitor: './src/renderer/src/entries/monitor.js',
-    session:'./src/renderer/src/entries/session.js'
+    session: './src/renderer/src/entries/session.js',
   },
   devtool: 'inline-source-map',
   target: 'electron-renderer',
@@ -54,7 +54,9 @@ module.exports = {
       { test: /face-api.esm.js/, type: 'javascript/esm' },
     ],
   },
-  plugins: [],
+  plugins: [
+   
+  ],
   resolve: {
     extensions: ['.js'],
   },

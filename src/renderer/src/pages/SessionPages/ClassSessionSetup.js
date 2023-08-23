@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { ipcRenderer } from 'electron';
 import Toggle from 'react-toggle';
 import { setMicEnable, setVideoEnable } from '../../store';
 import {
@@ -14,7 +14,13 @@ import { useNavigate } from 'react-router-dom';
 const ClassSessionSetup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { setUpWebCam, videoRef, disableWebcam } = useContext(RealtimeContext);
+  const {
+    setUpWebCam,
+    videoRef,
+    disableWebcam,
+    socket,
+    createDevice,
+  } = useContext(RealtimeContext);
 
   const { isMicEnable, isVideoEnable } = useSelector((state) => {
     return state.session;
@@ -27,18 +33,34 @@ const ClassSessionSetup = () => {
     } else {
       disableWebcam();
     }
-    dispatch(setVideoEnable(value))
+    dispatch(setVideoEnable(value));
   };
   const handleToClassSession = () => {
-    navigate('/' + uuidv4());
+    navigate('/' + session);
   };
   const handleMic = (e) => {
     const value = e.target.checked;
     dispatch(setMicEnable(value));
   };
   const handleCancel = () => {
-    window.account.closeSessionWindow('closeSessionWindow');
+    ipcRenderer.send('closeSessionWindow');
   };
+  const session = localStorage.getItem('sessionId');
+
+  const joinClassSession = (sessionId) => {
+    console.log('sessionId:', sessionId);
+    socket.emit('join-class-session', { sessionId }, ({ rtpCapabilities }) => {
+      createDevice(rtpCapabilities);
+    });
+  };
+
+  useEffect(() => {
+    if (socket) {
+      joinClassSession(session);
+      console.log('socket is set');
+    }
+  }, [socket]);
+
   return (
     <div className="h-screen m-auto w-webcam pt-28">
       <p className="text-title  text-center">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { ipcRenderer } from 'electron';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { TbFileReport, TbLogout } from 'react-icons/tb';
 import { useSelector } from 'react-redux';
@@ -57,7 +58,7 @@ const SideBar = () => {
         {accountType === 'tutor' ? (
           <div
             onClick={() => {
-              window.account.openMonitorWindow('openMonitorWindow');
+              ipcRenderer.send('openMonitorWindow');
             }}
             className={inActiveClass}
           >

@@ -2,6 +2,7 @@ const { BrowserWindow, screen } = require('electron');
 const path = require('path');
 const windowStateKeeper = require('electron-window-state');
 
+
 exports.createMonitorWindow = (isShow) => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
@@ -15,7 +16,9 @@ exports.createMonitorWindow = (isShow) => {
     x: winState.x,
     y: winState.y,
     webPreferences: {
-      preload: path.join(__dirname, '../../preload/preload.js'),
+      // preload: path.join(__dirname, '../../preload/preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
     autoHideMenuBar: true,
     titleBarStyle: 'hidden',
@@ -32,7 +35,16 @@ exports.createMonitorWindow = (isShow) => {
   monitorWindow.loadFile(
     path.join(__dirname, '../../renderer/public/monitor.html')
   );
-
+    monitorWindow.webContents.session.setCertificateVerifyProc(
+      (request, callback) => {
+        const { hostname } = request;
+        if (hostname === 'localhost') {
+          callback(0);
+        } else {
+          callback(-2);
+        }
+      }
+    );
   winState.manage(monitorWindow);
   return monitorWindow;
 };

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { socket } from '../../context/realtimeContext';
+
 const classroomSlice = createSlice({
   name: 'classroom',
   initialState: {

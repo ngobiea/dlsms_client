@@ -15,6 +15,11 @@ contextBridge.exposeInMainWorld('account', {
   copyCode: (code) => ipcRenderer.send('copyCode', code),
   openMonitorWindow: () => ipcRenderer.send('openMonitorWindow'),
   getPaths: () => ipcRenderer.invoke('paths'),
+  getRequire: () => ipcRenderer.invoke('require'),
+  getMediasoup: () => ipcRenderer.invoke('mediasoup-client'),
   openSessionWindow: () => ipcRenderer.send('openSessionWindow'),
   closeSessionWindow: () => ipcRenderer.send('closeSessionWindow'),
 });
+
+
+contextBridge.exposeInMainWorld('load', load);

@@ -1,6 +1,7 @@
 const { BrowserWindow, screen } = require('electron');
 const path = require('path');
 const windowStateKeeper = require('electron-window-state');
+const fs = require('fs');
 
 exports.createAppWindow = (isShow) => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
@@ -15,7 +16,9 @@ exports.createAppWindow = (isShow) => {
     x: winState.x,
     y: winState.y,
     webPreferences: {
-      preload: path.join(__dirname, '../../preload/preload.js'),
+      // preload: path.join(__dirname, '../../preload/preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
     autoHideMenuBar: true,
     titleBarStyle: 'hidden',
@@ -24,13 +27,12 @@ exports.createAppWindow = (isShow) => {
       symbolColor: 'white',
       height: 40,
     },
-
-    title: 'Session',
+    title: 'Main App Window',
     show: isShow,
     icon: path.join(__dirname, '../../renderer/public/images/dlsms2.png'),
   });
   mainWindow.loadFile(path.join(__dirname, '../../renderer/public/index.html'));
-
+ 
   winState.manage(mainWindow);
   return mainWindow;
 };

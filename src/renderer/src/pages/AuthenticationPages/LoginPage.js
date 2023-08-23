@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { ipcRenderer } from 'electron';
 import logo from '../../../public/images/dlsms2.png';
 import AccountContext from '../../context/accountContext';
 import { Link } from 'react-router-dom';
@@ -36,7 +37,7 @@ const LoginPage = () => {
     };
     localStorage.setItem('user', JSON.stringify(data.userDetails));
     localStorage.setItem('email', JSON.stringify(data.userDetails.email));
-    window.account.login(isLogin);
+    ipcRenderer.send('login', isLogin);
   }
 
   return (
@@ -47,7 +48,7 @@ const LoginPage = () => {
       <div className="close">
         <p className="text-right absolute top-0 right-0 text-2xl font-semibold mr-4">
           <span
-            onClick={() => window.account.exitApp()}
+            onClick={() => ipcRenderer.send('exitApp')}
             className="cursor-pointer text-green-900"
           >
             X

@@ -1,4 +1,5 @@
 import React from 'react';
+import { ipcRenderer } from 'electron';
 import { MdOutlineCalendarMonth } from 'react-icons/md';
 import { formatDateTime, formatCustomDateTime } from '../../../utils/dateTime';
 import { useSelector } from 'react-redux';
@@ -6,8 +7,12 @@ const ClassSessionScheduleMessage = ({ message }) => {
   const { accountType } = useSelector((state) => {
     return state.account;
   });
+
   const handleSession = () => {
-    window.account.openSessionWindow('openSessionWindow');
+    const sessionId = message.classSession._id;
+    localStorage.setItem('sessionId', sessionId);
+    ipcRenderer.send('openSessionWindow');
+
   };
   return (
     <div className="bg-gray-300 transition duration-350 ease-in-out mx-2 rounded-lg rounded-bl-none">

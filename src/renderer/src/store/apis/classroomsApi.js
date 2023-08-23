@@ -8,8 +8,9 @@ import { verifyClassroomCodeQuery } from './classroomApi/verifyClassroomCodeQuer
 import { prepareHeaders } from './classroomApi/prepareHeaders';
 const classroomApi = createApi({
   reducerPath: 'classroomApi',
+  tagTypes: ['classroom'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5001',
+    baseUrl: 'http://localhost:6001',
     prepareHeaders,
   }),
   endpoints(builder) {
